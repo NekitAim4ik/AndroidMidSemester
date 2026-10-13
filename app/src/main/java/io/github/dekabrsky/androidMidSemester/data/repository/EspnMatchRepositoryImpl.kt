@@ -5,6 +5,7 @@ import io.github.dekabrsky.androidMidSemester.data.api.EspnApi
 import io.github.dekabrsky.androidMidSemester.data.api.dto.toMatch
 import io.github.dekabrsky.androidMidSemester.data.cache.MatchesInMemoryCache
 import io.github.dekabrsky.androidMidSemester.domain.model.Match
+import io.github.dekabrsky.androidMidSemester.domain.model.Team
 import io.github.dekabrsky.androidMidSemester.domain.repository.MatchRepository
 import java.time.LocalDate
 
@@ -40,5 +41,9 @@ class EspnMatchRepositoryImpl(
         Log.d(TAG, "🔍 Запрос деталей матча $id к ESPN API")
         val response = api.getSummary(id.toString())
         return response.toMatch()
+    }
+
+    override suspend fun teamsByCountry(country: String): List<Team> {
+        TODO("Not yet implemented")
     }
 }

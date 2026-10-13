@@ -5,6 +5,7 @@ import io.github.dekabrsky.androidMidSemester.data.api.SStatsApi
 import io.github.dekabrsky.androidMidSemester.data.cache.MatchesInMemoryCache
 import io.github.dekabrsky.androidMidSemester.data.mapper.toMatch
 import io.github.dekabrsky.androidMidSemester.domain.model.Match
+import io.github.dekabrsky.androidMidSemester.domain.model.Team
 import io.github.dekabrsky.androidMidSemester.domain.repository.MatchRepository
 import java.time.LocalDate
 
@@ -36,4 +37,15 @@ class MatchRepositoryImpl(
 
     override suspend fun match(id: Long): Match =
         api.game(id).data?.toMatch() ?: throw NoSuchElementException("Матч $id не найден")
+
+    override suspend fun teamsByCountry(country: String): List<Team> {
+        // Бизнес сказал вернуться на sstats, поэтому используем его API
+        return api.getTeams(country).data.map { dto ->
+            Team(
+                id = dto.id,
+                name = dto.name,
+                logoUrl = null
+            ) // logoUrl можно добавить, если API его отдает
+        }
+    }
 }
